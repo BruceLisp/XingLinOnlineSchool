@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hnucm.xinglinonlineschool.dao.VideoMapper">
+    <!-- 查询所有的视频信息 -->
+    <select id="queryAllVideos" resultType="com.hnucm.xinglinonlineschool.pojo.Video">
+        select * from video;
+    </select>
+    <!-- 向数据库中添加一条视频信息 -->
+    <insert id="addVideo" parameterType="com.hnucm.xinglinonlineschool.pojo.Video">
+        insert into video(videourl, imageurl, description, uploadDate) values(#{videoUrl}, #{imageUrl}, #{description}, #{uploadDate});
+    </insert>
+    <!-- 通过id查询视频信息 -->
+    <select id="getVideoById" resultType="com.hnucm.xinglinonlineschool.pojo.Video" parameterType="Integer">
+        select * from video where id = #{id};
+    </select>
+
+    <resultMap id="BVideo" type="com.hnucm.xinglinonlineschool.pojo.BriefVideo">
+        <id property="id" column="id"></id>
+        <result property="label" column="description"></result>
+    </resultMap>
+    <!-- 得到所有视频信息的id和路径 -->
+    <select id="getBriefVideoList" resultMap="BVideo">
+        select id,description from video;
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

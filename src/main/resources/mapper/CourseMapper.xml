@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hnucm.xinglinonlineschool.dao.CourseMapper">
+    <!-- 根据课程的名字查找课程名 -->
+    <select id="queryCourseByName" resultType="com.hnucm.xinglinonlineschool.pojo.Course" parameterType="String">
+        select * from course where theme like "%"#{name}"%";
+    </select>
+    <!-- 添加课程信息，并返回课程号 -->
+    <insert id="addCourse" useGeneratedKeys="true" keyProperty="id" parameterType="com.hnucm.xinglinonlineschool.pojo.Course">
+        insert into course(theme,introduction,tid,type,status,date,price) values(#{theme},#{introduction},#{tid},#{type},#{status},#{date},#{price});
+    </insert>
+    <!-- 修改课程的状态 -->
+    <update id="updateCourseStatus" parameterType="com.hnucm.xinglinonlineschool.pojo.Course">
+        update course set status=#{status} where id=#{id};
+    </update>
+    <!-- 得到课程的coverImg的url -->
+    <select id="findCoverUrlById" resultType="String" parameterType="Integer">
+        select coverurl from course where id=#{id};
+    </select>
+    <!-- 得到所有的课程信息 -->
+    <select id="queryAllCourse" resultType="com.hnucm.xinglinonlineschool.pojo.Course">
+        select id,theme,introduction,tid,type,status,date,price from course;
+    </select>
+    <!--根据课程讲师id查询课程信息列表-->
+    <select id="findCourseBytid" parameterType="Integer" resultType="com.hnucm.xinglinonlineschool.pojo.Course">
+        select * from course where tid = #{tid};
+    </select>
+    <!--根据课程id查询课程信息-->
+    <select id="findCourseById" parameterType="Integer" resultType="com.hnucm.xinglinonlineschool.pojo.Course">
+        select id,theme,introduction,tid,type,status,date,price from course where id = #{id};
+    </select>
+    <!--根据课程号查询课程主目录列表-->
+    <select id="queryCNodeByCid" parameterType="Integer" resultType="com.hnucm.xinglinonlineschool.pojo.CourseNode">
+        select * from coursenode where fid = 0 and cid = #{cid};
+    </select>
+    <!--根据父目录id查询文件列表-->
+    <select id="queryCNodeByFid" parameterType="Integer" resultType="com.hnucm.xinglinonlineschool.pojo.CourseNode">
+        select * from coursenode where fid = #{fid};
+    </select>
+    <!--修改文件的内容-->
+    <update id="updateCNodeUrl" parameterType="com.hnucm.xinglinonlineschool.pojo.CourseNode">
+        update coursenode set url=#{url},date=#{date} where id=#{id};
+    </update>
+    <!--修改目录的名字-->
+    <update id="updateCNodeName" parameterType="com.hnucm.xinglinonlineschool.pojo.CourseNode">
+        update coursenode set name=#{name} where id=#{id};
+    </update>
+    <!--添加目录或者文件结点,并返回id-->
+    <insert id="addNode" useGeneratedKeys="true" keyProperty="id" parameterType="com.hnucm.xinglinonlineschool.pojo.CourseNode">
+        insert into coursenode(name,fid,url,imgurl,date,cid,type) values(#{name},#{fid},#{url},#{imgUrl},#{date},#{cid},#{type});
+    </insert>
+    <!--删除文件或目录结点-->
+    <delete id="deleteNode" parameterType="com.hnucm.xinglinonlineschool.pojo.CourseNode">
+        delete from coursenode where id = #{id};
+    </delete>
+    <!--删除整个课程的所有节点-->
+    <delete id="deleteCourse" parameterType="integer">
+        delete from coursenode where cid = #{cid};
+    </delete>
+    <!-- 根据fid删除所有子节点 -->
+    <delete id="deleteNodeByFid" parameterType="integer">
+        delete from coursenode where fid = #{fid};
+    </delete>
+    <!-- 修改course的cover的url -->
+    <update id="updateCoverUrl" parameterType="com.hnucm.xinglinonlineschool.pojo.Course">
+        update course set coverurl=#{coverurl} where id = #{id};
+    </update>
+    <!-- 根据课程地查询该课程老师的id -->
+    <select id="findTidById" resultType="Integer" parameterType="Integer">
+        select tid from course where id=#{id};
+    </select>
+    <!-- 根据用户的id查询所有订阅的课程的信息 -->
+    <select id="queryAllCourseByUid" parameterType="Integer" resultType="com.hnucm.xinglinonlineschool.pojo.Course">
+        select * from course where course.id in (select trade.cid from trade where trade.uid=#{id});
+    </select>
+    <!--根据结点id查询课程的id-->
+    <select id="findCidByNid" resultType="Integer" parameterType="Integer">
+        select cid from coursenode where id = #{nid};
+    </select>
+    <!--根据结点id查询课程的id-->
+    <select id="findCourseNodeById" resultType="com.hnucm.xinglinonlineschool.pojo.CourseNode" parameterType="Integer">
+        select * from coursenode where id = #{id};
+    </select>
+
+</mapper>
+

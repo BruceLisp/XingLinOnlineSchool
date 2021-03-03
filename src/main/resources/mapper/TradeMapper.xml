@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hnucm.xinglinonlineschool.dao.TradeMapper">
+    <!-- 插入数据并返回订单id -->
+    <insert id="addTradeReturnId" keyProperty="id" useGeneratedKeys="true" parameterType="com.hnucm.xinglinonlineschool.pojo.Trade">
+        insert into trade(uid,cid,numofxl,date) values(#{uid},#{cid},#{numOfXL},#{date});
+    </insert>
+    <!-- 根据用户的id查询所有的订阅记录 -->
+    <select id="queryAllTradeByUid" resultType="com.hnucm.xinglinonlineschool.pojo.Trade" parameterType="Integer">
+        select * from trade where uid=#{id};
+    </select>
+    <!-- 查询所有的订单信息 -->
+    <select id="queryAllTrade" resultType="com.hnucm.xinglinonlineschool.pojo.Trade">
+        select * from trade;
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

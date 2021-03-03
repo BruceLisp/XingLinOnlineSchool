@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hnucm.xinglinonlineschool.dao.UserMapper">
+    <!--插入user并返回id-->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" parameterType="com.hnucm.xinglinonlineschool.pojo.User">
+        insert into user(email,registerDate) values(#{email}, #{registerDate});
+    </insert>
+    <!-- 查询所有的用户信息 -->
+    <select id="queryAllUsers" resultType="com.hnucm.xinglinonlineschool.pojo.User">
+        select * from user;
+    </select>
+    <!-- 注册一条用户登录账号 -->
+    <insert id="insertUserLogin" parameterType="com.hnucm.xinglinonlineschool.pojo.UserLogin">
+        insert into userlogin(username,password) values (#{username},#{password});
+    </insert>
+    <!-- 修改用户头像的url -->
+    <update id="updateUserHeadImg" parameterType="com.hnucm.xinglinonlineschool.pojo.User">
+        update user set imgurl = #{imgUrl} where id = #{id};
+    </update>
+    <!-- 修改信息 -->
+    <update id="updateMess" parameterType="com.hnucm.xinglinonlineschool.pojo.User">
+        update user set sex=#{sex},tel=#{tel},name=#{name},birthday=#{birthday} where id = #{id};
+    </update>
+    <!-- 修改密码 -->
+    <update id="updatePassword" parameterType="com.hnucm.xinglinonlineschool.pojo.UserLogin">
+        update userlogin set password=#{password} where uid = #{id};
+    </update>
+    <!-- 查询最近添加记录的id,不适合高并发，有时候并不准确 -->
+    <select id="selectLastId" resultType="Integer">
+        select LAST_INSERT_ID();
+    </select>
+    <!-- 查询邮箱是否存在 -->
+    <select id="emailIsExist" resultType="Integer" parameterType="String">
+        select count(*) from userlogin where username = #{username};
+    </select>
+    <!-- 查询手机是否存在 -->
+    <select id="telIsExist" resultType="Integer" parameterType="String">
+        select count(*) from user where tel = #{tel};
+    </select>
+    <!--  根据用户id查询用户的密码  -->
+    <select id="queryUserLoginByUsername" parameterType="String" resultType="com.hnucm.xinglinonlineschool.pojo.UserLogin">
+        select * from userlogin where username = #{username};
+    </select>
+    <!-- 更新用户余额 -->
+    <update id="updateUserBalance" parameterType="com.hnucm.xinglinonlineschool.pojo.Trade">
+        update user set balance=balance+#{numOfXL} where id=#{uid};
+    </update>
+    <!-- 根据用户的id查找头像的url -->
+    <select id="fingUserheadImgById" parameterType="Integer" resultType="String">
+        select imgurl from user where id = #{id};
+    </select>
+    <!-- 根据用户的id查找用户的信息 -->
+    <select id="findUserById" resultType="com.hnucm.xinglinonlineschool.pojo.User" parameterType="Integer">
+        select * from User where id = #{id};
+    </select>
+    <!-- 根据用户的id查找用户的信息 -->
+    <select id="findUserLoginById" resultType="com.hnucm.xinglinonlineschool.pojo.UserLogin" parameterType="Integer">
+        select * from UserLogin where id = #{id};
+    </select>
+    <!-- 根据用户的uid查找用户的信息 -->
+    <select id="findUserLoginByUid" resultType="com.hnucm.xinglinonlineschool.pojo.UserLogin" parameterType="Integer">
+        select * from UserLogin where uid = #{id};
+    </select>
+    <!--判断用户是否存在-->
+    <select id="findUserByName" resultType="Integer" parameterType="String">
+        select count(*) from userLogin where username = #{username};
+    </select>
+    <!-- 查询用户余额 -->
+    <select id="queryUserBalanceById" resultType="Integer" parameterType="Integer">
+        select balance from user where id = #{uid};
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hnucm.xinglinonlineschool.dao.AliPayTradeMapper">
+    <!-- 上传调用支付宝进行充值的记录，并返回订单记录的id -->
+    <insert id="addTradeReturnKey" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hnucm.xinglinonlineschool.pojo.AliPayTrade">
+        insert into recharge(amount,uid,date,status,numOfXL) values(#{amount},#{uid},#{date},#{status},#{numOfXL});
+    </insert>
+    <!-- 更新订单的状态，将其设置为完成 -->
+    <update id="updateTradeStatus" parameterType="Integer">
+        update recharge set status=1 where id=#{id};
+    </update>
+    <!-- 通过id查询定单 -->
+    <select id="queryTradeById" resultType="com.hnucm.xinglinonlineschool.pojo.AliPayTrade" parameterType="Integer">
+        select * from recharge where id=#{id};
+    </select>
+    <!-- 更新用户余额 -->
+    <update id="updateUserBalance" parameterType="com.hnucm.xinglinonlineschool.pojo.AliPayTrade">
+        update user set balance=balance+#{numOfXL} where id=#{uid};
+    </update>
+    <!-- 更新用户余额 -->
+    <select id="queryAllRecharge" resultType="com.hnucm.xinglinonlineschool.pojo.AliPayTrade">
+        select * from recharge;
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
